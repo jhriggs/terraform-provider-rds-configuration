@@ -245,7 +245,7 @@ func readConfiguration(ctx context.Context, client *mysqlClient, withDescription
 
 	var (
 		name        string
-		value       int
+		value       interface{}
 		description string
 	)
 

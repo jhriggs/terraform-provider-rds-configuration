@@ -47,7 +47,7 @@ resource "rds-configuration_configuration" "bar" {
 Required:
 
 - `name` (String) The setting name. Only settings supported by RDS/Aurora will be allowed. Others will cause an error during `plan` or `apply`.
-- `value` (Number) The value for the setting.
+- `value` (Number) The value for the setting. _**NOTE:** For `binlog retention hours`, the value `0` will be converted to `NULL`, as required by `mysql.rds_set_configuration()`._
 
 ## Import
 

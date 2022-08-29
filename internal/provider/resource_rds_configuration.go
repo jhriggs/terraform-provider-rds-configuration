@@ -44,7 +44,12 @@ func resourceRdsConfiguration() *schema.Resource {
 							Required: true,
 						},
 						"value": {
-							Description: "The value for the setting.",
+							Description: joinStrings(
+								"The value for the setting. ",
+								"_**NOTE:** For `binlog retention hours`, the value `0` will ",
+								"be converted to `NULL`, as required by ",
+								"`mysql.rds_set_configuration()`._",
+							),
 							Type:        schema.TypeInt,
 							Required:    true,
 						},
@@ -74,6 +79,10 @@ func resourceRdsConfigurationCreateOrUpdate(ctx context.Context, d *schema.Resou
 
 	for _, s := range d.Get("setting").(*schema.Set).List() {
 		s := s.(map[string]interface{})
+
+		if (s["name"] == "binlog retention hours") && (s["value"] == 0) {
+			s["value"] = nil
+		}
 
 		_, err := db.Exec("CALL mysql.rds_set_configuration(?, ?)", s["name"], s["value"])
 		if err != nil {

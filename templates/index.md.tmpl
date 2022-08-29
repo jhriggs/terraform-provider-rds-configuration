@@ -20,6 +20,18 @@ you provide for `username`/`password` or `master_username`/`master_password` in
 these resources, respectively. You can also use the `endpoint` attribute from
 these resources (or data sources) for this provider.
 
+## Available Settings
+
+According to [the `rds_set_configuration`
+documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql_rds_set_configuration.html),
+the only (currently) supported settings are:
+
+* `binlog retention hours`: RDS MySQL DB instances and Aurora MySQL clusters
+* `target delay`: RDS MySQL DB instances only
+
+For `binlog retention hours`, values of `0` in Terraform will be automatically
+converted to `NULL` in the database and vice-versa.
+
 ## Single Configuration Resource per Provider
 
 You can create multiple instances of the RDS Configuration provider to manage
