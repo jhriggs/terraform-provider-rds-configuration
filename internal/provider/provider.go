@@ -245,7 +245,7 @@ func readConfiguration(ctx context.Context, client *mysqlClient, withDescription
 
 	var (
 		name        string
-		value       interface{}
+		value       sql.NullInt64
 		description string
 	)
 
@@ -259,7 +259,7 @@ func readConfiguration(ctx context.Context, client *mysqlClient, withDescription
 
 		result[name] = map[string]interface{}{
 			"name":  name,
-			"value": value,
+			"value": map[bool]interface{}{true: value.Int64, false: nil}[value.Valid],
 		}
 
 		if withDescriptions {
